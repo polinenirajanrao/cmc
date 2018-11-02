@@ -1,0 +1,50 @@
+.cmc-header-wrapper {
+    height: 70px;
+    position: sticky;
+    left: 0px;
+    top: 0px;
+    background-color: #414b4b;
+    width: 100%;
+    margin: 0 auto;
+    padding: 5px 10px;
+    box-sizing: border-box;
+    z-index: 1000;
+}
+
+.cmc-header-content {
+    display: table;
+    width: 100% !important;
+}
+
+.cmc-logo-wrapper {
+    width: 25% !important;
+    display: table-cell;
+}
+
+.cmc-title-wrapper {
+    width: 55% !important;
+    display: table-cell;
+    text-align: center;
+    font-size: 2.5em;
+    vertical-align: middle;
+    color: #bcbcbc;    
+}
+@media screen and (max-width: 768px) {
+    .cmc-title-wrapper {
+       
+    }    
+}
+
+.cmc-user-info-wrapper {
+    width: 20% !important;
+    display: table-cell;
+}
+
+.cmc-app-container {
+    top: 70px;
+    position: absolute;
+    height: calc(100% - 80px);
+    overflow-y: auto;
+    margin: 5px;
+    width: calc(100% - 5px);
+}
