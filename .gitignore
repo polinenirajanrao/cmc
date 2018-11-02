@@ -1,0 +1,6 @@
+.idea
+__pycache__
+cmcvenv
+cmc/front-end/node_modules
+cmc/static/front-end
+db.sqlite3
