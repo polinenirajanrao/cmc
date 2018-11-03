@@ -5,6 +5,8 @@ from .models import Employee
 from . import serializers
 from .permissions import ReadOnly
 
+from django.shortcuts import redirect
+
 
 def index(request, path=''):
     """
@@ -32,3 +34,9 @@ class EmployeeViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+def handler404(request, exception):
+    # make a redirect to homepage
+    # you can use the name of url or just the plain link
+    return redirect('')  # or redirect('name-of-index-url')
