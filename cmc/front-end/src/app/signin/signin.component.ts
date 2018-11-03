@@ -15,7 +15,6 @@ export class SignInComponent implements OnInit {
 
     }
     signInUser() {
-        console.log(this.user);
         this._UserService.login(this.user)
     }
 }

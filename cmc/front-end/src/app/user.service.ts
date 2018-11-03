@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import { CookieService } from 'ngx-cookie';
 
 @Injectable()
 export class UserService {
@@ -19,9 +20,17 @@ export class UserService {
   // error messages received from the login attempt
   public errors: any = [];
 
-  constructor(private http: HttpClient) {
+
+
+  constructor(private http: HttpClient, private _cookieService:CookieService) {
+    // CSRF token is needed to make API calls work when logged in
+    let csrf = this._cookieService.get("csrftoken");
+    // the Angular HttpHeaders class throws an exception if any of the values are undefined
+    if (typeof(csrf) === 'undefined') {
+          csrf = '';
+    }
     this.httpOptions = {
-      headers: new HttpHeaders({'Content-Type': 'application/json'})
+      headers: new HttpHeaders({'Content-Type': 'application/json', 'X-CSRFToken': csrf })
     };
   }
 
@@ -71,5 +80,18 @@ export class UserService {
     this.token_expires = new Date(token_decoded.exp * 1000);
     this.username = token_decoded.username;
   }
+
+    // Uses http.post() to register a employee
+    public register(employee) {
+      this.http.post('/register/', JSON.stringify(employee), this.httpOptions).subscribe(
+        data => {
+          console.log('registration success', data);
+        },
+        err => {
+          console.error('registration error', err);
+          this.errors = err['error'];
+        }
+      );
+    }
 
 }
