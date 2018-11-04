@@ -1,0 +1,62 @@
+<h2> Your groups</h2>
+<div>
+    <button (click)="createGroup()">create group</button>
+</div>
+<table class="table table-bordered">
+    <thead>
+        <th>
+            Name
+        </th>
+        <th>
+            status
+        </th>
+        <th>
+            Toggle status
+        </th>
+    </thead>
+    <tbody>
+        <tr *ngFor='let group of groups'>
+            <td >
+                {{group.group_name}}
+            </td>
+            <td >
+                {{group.is_active}}
+            </td>
+            <td >
+                action to make inactive
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<br>
+<h2>Your contacts</h2>
+<div>
+    <button (click)="createContact()">create contact</button>
+</div>
+<table class="table table-bordered">
+    <thead>
+        <th>
+            Name
+        </th>
+        <th>
+            status
+        </th>
+        <th>
+            Toggle status
+        </th>
+    </thead>
+    <tbody>
+        <tr *ngFor='let group of contact'>
+            <td >
+                {{group.first_name}}
+            </td>
+            <td >
+                {{group.is_active}}
+            </td>
+            <td >
+                -----
+            </td>
+        </tr>
+    </tbody>
+</table>

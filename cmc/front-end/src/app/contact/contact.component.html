@@ -1,0 +1,17 @@
+<div>
+    <div>
+        <input type="email" [(ngModel)]="contact.email"/>
+    </div>
+    <div>
+        <input type="text" [(ngModel)]="contact.first_name"/>
+    </div>
+    <div>
+        <input type="text" [(ngModel)]="contact.last_name" />
+    </div>
+    <div>
+        <input type="number" [(ngModel)]="contact.phone"/>
+    </div>
+    <div>
+        <button (click)="createContact(contact)">sign up</button>
+    </div>
+</div>

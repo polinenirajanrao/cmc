@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from rest_framework import viewsets, permissions
-from .models import Employee
+from .models import Employee, Group, Contact
 from . import serializers
 from .permissions import ReadOnly
 
@@ -40,3 +40,29 @@ def handler404(request, exception):
     # make a redirect to homepage
     # you can use the name of url or just the plain link
     return redirect('')  # or redirect('name-of-index-url')
+
+
+class GroupViewSet(viewsets.ModelViewSet):
+    """
+    Provides basic CRUD functions for the Group model
+    """
+    queryset = Group.objects.all()
+    serializer_class = serializers.GroupSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
+
+    def perform_create(self, serializer):
+        employee = Employee.objects.filter(user=self.request.user)
+        serializer.save(employee=employee)
+
+
+class ContactViewSet(viewsets.ModelViewSet):
+    """
+    Provides basic CRUD functions for the Blog Post model
+    """
+    queryset = Contact.objects.all()
+    serializer_class = serializers.ContactSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
+
+    def perform_create(self, serializer):
+        employee = Employee.objects.filter(user=self.request.user)
+        serializer.save(created_emp=employee)

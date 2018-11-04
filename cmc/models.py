@@ -21,13 +21,14 @@ class Contact(models.Model):
     last_name = models.CharField(max_length=25, blank=False)
     phone = models.CharField(max_length=15, blank=False)
     created_emp = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    is_active = models.BooleanField(default=True)
 
 
 # Group model, this has relationship with employee who crated this Group
 class Group(models.Model):
     group_name = models.CharField(max_length=25, blank=False, null=True)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
 
 
 # GroupContractMap model, when a Employee adds a contact to group the mapping is saved here
