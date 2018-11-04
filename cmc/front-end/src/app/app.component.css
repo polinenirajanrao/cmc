@@ -1,5 +1,4 @@
 .cmc-header-wrapper {
-    height: 70px;
     position: sticky;
     left: 0px;
     top: 0px;
@@ -13,38 +12,50 @@
 
 .cmc-header-content {
     display: table;
-    width: 100% !important;
+    width: 100%;
 }
 
 .cmc-logo-wrapper {
-    width: 25% !important;
+    width: 20%;
     display: table-cell;
 }
 
 .cmc-title-wrapper {
-    width: 55% !important;
+    width: 60%;
     display: table-cell;
     text-align: center;
-    font-size: 2.5em;
+    font-size: 2em;
     vertical-align: middle;
-    color: #bcbcbc;    
-}
-@media screen and (max-width: 768px) {
-    .cmc-title-wrapper {
-       
-    }    
+    color: #bcbcbc;
 }
 
 .cmc-user-info-wrapper {
-    width: 20% !important;
+    width: 20%;
     display: table-cell;
 }
 
 .cmc-app-container {
-    top: 70px;
-    position: absolute;
-    height: calc(100% - 80px);
     overflow-y: auto;
     margin: 5px;
-    width: calc(100% - 5px);
+}
+
+@media screen and (max-width: 767px) {
+    .cmc-title-wrapper {
+        font-size: 1.5em;
+    }
+    .cmc-header-wrapper {
+        height: inherit;
+    }
+    .cmc-logo-wrapper,
+    .cmc-title-wrapper,
+    .cmc-user-info-wrapper {
+        display: block;
+        width: 100%;
+    }
+}
+
+@media screen and (max-width:1024px) and (min-width:768px) {
+    .cmc-title-wrapper {
+        font-size: 1.5em;
+    }
 }

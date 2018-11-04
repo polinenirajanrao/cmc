@@ -19,6 +19,8 @@ urlpatterns = [
     path(r'groups-for-employee/', api.GetGroupsForEmployee.as_view()),
     path(r'contacts-for-employee/', api.GetContactsForEmployee.as_view()),
     path(r'contacts-for-group/', api.GetContactsForGroup.as_view()),
+    path(r'add-contract-to-group/', api.AddContactToGroup.as_view()),
+    path(r'get-current-employee/', api.EmployeeDetails.as_view()),
 ]
 
 urlpatterns += router.urls

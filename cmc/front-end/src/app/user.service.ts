@@ -9,8 +9,6 @@ export class UserService {
   // http options used for making API calls
   private httpOptions: any;
 
-  private httpOptionsAllowAny: any;
-
   // the actual JWT token
   public token: string;
 
@@ -36,9 +34,6 @@ export class UserService {
       headers: new HttpHeaders({'Content-Type': 'application/json',
         'X-CSRFToken': csrf,
         'Authorization': 'JWT ' + this.token })
-    };
-    this.httpOptionsAllowAny = {
-      headers: new HttpHeaders({'Content-Type': 'application/json', 'X-CSRFToken': csrf })
     };
   }
 
@@ -92,6 +87,7 @@ export class UserService {
         'X-CSRFToken': csrf,
         'Authorization': 'JWT ' + this.token })
     };
+    localStorage.setItem["cmc-auth-token"] = (this.token);
     // decode the token to read the username and expiration timestamp
     const token_parts = this.token.split(/\./);
     const token_decoded = JSON.parse(window.atob(token_parts[1]));
@@ -101,7 +97,7 @@ export class UserService {
 
   // Uses http.post() to register a employee
   public register(employee) {
-    this.http.post('/register/', JSON.stringify(employee), this.httpOptionsAllowAny).subscribe(
+    this.http.post('/register/', JSON.stringify(employee), this.httpOptions).subscribe(
       data => {
         console.log('registration success', data);
       },

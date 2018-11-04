@@ -2,9 +2,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions
 from django.contrib.auth.models import User
-from .models import Employee, Contact, Group, GroupContractMap, SystemConfiguration
+from .models import Employee, Contact, Group, GroupContractMap
 from rest_framework import views
-from .serializers import ContactSerializer, GroupSerializer, GroupContractMapSerializer,SystemConfigurationSerializer
+from .serializers import ContactSerializer, GroupSerializer, GroupContractMapSerializer, EmployeeSerializer
 
 
 class RegisterEmployee(APIView):
@@ -114,7 +114,7 @@ class CreateGroup(APIView):
 
             return Response("Group saved.")
         except Exception as e:
-            return Response("Group creation failed failed."+ str(e))
+            return Response("Group creation failed."+ str(e))
 
 
 class CreateContact(APIView):
@@ -143,9 +143,108 @@ class CreateContact(APIView):
             contact.last_name = last_name
             contact.phone = phone
             employee = Employee.objects.filter(user=self.request.user).first()
-            contact.employee = employee
+            contact.created_emp = employee
             contact.save()
 
             return Response("Contact saved.")
         except Exception as e:
-            return Response("Contact creation failed failed."+ str(e))
+            return Response("Contact creation failed."+ str(e))
+
+
+class AddContactToGroup(APIView):
+    """
+    View to add contact to group
+
+    * only authenticated users can access this view.
+    """
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request, format=None):
+        """
+        add a contact to group
+        """
+        try:
+            # retrieve details from post request
+            contact_id = request.data.get("contact_id")
+            group_id = request.data.get("group_id")
+            employee = Employee.objects.filter(user=self.request.user).first()
+
+            groupContractMap = GroupContractMap()
+            groupContractMap.contact_id = contact_id
+            groupContractMap.employee = employee
+            groupContractMap.group_id = group_id
+            groupContractMap.save()
+
+            return Response("Contact saved to group.")
+        except Exception as e:
+            return Response("adding contact to group failed."+ str(e))
+
+
+class DeactivateGroup(APIView):
+    """
+    View to deactivate to group
+
+    * only authenticated users can access this view.
+    """
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request, format=None):
+        """
+        deactivate a group
+        """
+        try:
+            # retrieve details from post request
+            group_id = request.data.get("group_id")
+            group = Group.objects.filter(id=group_id).first()
+            group.is_active = False;
+            group.save()
+
+            return Response("group deactivate")
+        except Exception as e:
+            return Response("deactivating group failed."+ str(e))
+
+
+class DeactivateContact(APIView):
+    """
+    View to deactivate to group
+
+    * only authenticated users can access this view.
+    """
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request, format=None):
+        """
+        deactivate a group
+        """
+        try:
+            # retrieve details from post request
+            contact_id = request.data.get("contact_id")
+            contact = Contact.objects.filter(id=contact_id).first()
+            contact.is_active = False;
+            contact.save()
+
+            return Response("contact deactivate")
+        except Exception as e:
+            return Response("contact deactivated."+ str(e))
+
+
+class EmployeeDetails(APIView):
+    """
+    View to get details of logged in employee
+    only authenticated users can access this view.
+    """
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, format=None):
+        """
+        etails of logged in employee
+        """
+        try:
+            # retrieve details from post request
+            queryset = Employee.objects.filter(user=self.request.user).first()
+            serializer = EmployeeSerializer(queryset)
+
+            return Response(serializer.data)
+        except Exception as e:
+            return Response("failed"+ str(e))
+
