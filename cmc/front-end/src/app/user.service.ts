@@ -9,6 +9,8 @@ export class UserService {
   // http options used for making API calls
   private httpOptions: any;
 
+  private httpOptionsAllowAny: any;
+
   // the actual JWT token
   public token: string;
 
@@ -34,6 +36,9 @@ export class UserService {
       headers: new HttpHeaders({'Content-Type': 'application/json',
         'X-CSRFToken': csrf,
         'Authorization': 'JWT ' + this.token })
+    };
+    this.httpOptionsAllowAny = {
+      headers: new HttpHeaders({'Content-Type': 'application/json', 'X-CSRFToken': csrf })
     };
   }
 
@@ -96,7 +101,7 @@ export class UserService {
 
   // Uses http.post() to register a employee
   public register(employee) {
-    this.http.post('/register/', JSON.stringify(employee), this.httpOptions).subscribe(
+    this.http.post('/register/', JSON.stringify(employee), this.httpOptionsAllowAny).subscribe(
       data => {
         console.log('registration success', data);
       },
@@ -123,7 +128,7 @@ export class UserService {
 
   // Uses http.post() to create a group
   public createContact(contact) {
-    this.http.post('/contact/', JSON.stringify(contact), this.httpOptions).subscribe(
+    this.http.post('/create-contact/', JSON.stringify(contact), this.httpOptions).subscribe(
       data => {
         console.log('registration success', data);
       },

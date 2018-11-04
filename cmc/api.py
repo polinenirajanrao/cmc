@@ -21,7 +21,7 @@ class RegisterEmployee(APIView):
         """
         try:
             # retrieve details from post request
-            email = request.data.get("username")
+            email = request.data.get("email")
             password = request.data.get("password")
             first_name = request.data.get("first_name")
             last_name = request.data.get("last_name")
@@ -29,7 +29,7 @@ class RegisterEmployee(APIView):
             employee_id = request.data.get("employee_id")
 
             # register user in django auth
-            user = User.objects.create_user(username=first_name + '.'+ last_name,
+            user = User.objects.create_user(username=email,
                                             email=email,
                                             password=password)
             user.first_name = first_name
@@ -143,7 +143,7 @@ class CreateContact(APIView):
             contact.last_name = last_name
             contact.phone = phone
             employee = Employee.objects.filter(user=self.request.user).first()
-            employee.employee = employee
+            contact.employee = employee
             contact.save()
 
             return Response("Contact saved.")
