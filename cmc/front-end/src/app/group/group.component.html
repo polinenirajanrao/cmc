@@ -1,10 +1,29 @@
-<div>
-    <div>
-        <input type="email" [(ngModel)]="group.group_name"/>
+<div class="cmc-signin-container">
+    <div *ngIf="!success" class="cmc-signin">
+        <div class="cmc-signin-row">
+            Group name<br /><input type="text" class="form-control" [(ngModel)]="group.group_name" />
+        </div>
+        <br/>
+        <div class="cmc-signin-row">
+            <div class="cmc-sighin-button">
+                <button class="btn btn-sm btn-primary" (click)="createGroup(group)">Create group</button>
+                <br />
+                <a routerLink="/home">Back to home</a>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="success" class="cmc-signin-container">
+        <div class="cmc-signin">
+            <div class="cmc-signin-row">
+                Group added successfully!
+            </div>
+            <div class="cmc-signin-row">
+                <div class="cmc-sighin-button">
+                    <a routerLink="/home">Back to home</a>
+                </div>
+            </div>
+            <br />
+
+        </div>
     </div>
 </div>
-<div>
-    <button (click)="createGroup(group)">sign in</button>
-</div>
-<br>
-<a routerLink="/home">back to home</a>

@@ -45,6 +45,6 @@ export class ApiService {
     // Uses http.get() to get contacts of an employee
     public getContactsForEmployee():Observable<any> {
       return this.http.get('/contacts-for-employee/', this.httpOptions)
-    }
+    }  
 
 }

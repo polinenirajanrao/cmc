@@ -8,6 +8,9 @@ import {UserService} from "../user.service";
 })
 export class SignUpComponent implements OnInit {
     employee: IEmployee;
+    response: any;
+    err: any;
+    success: boolean = false;
     constructor(private _UserService:UserService) {
         this.employee = new IEmployee();
     }
@@ -15,6 +18,9 @@ export class SignUpComponent implements OnInit {
 
     }
     signUpUser() {
-        this._UserService.register(this.employee)
+        this._UserService.register(this.employee).subscribe(
+            (data) => {this.response = data; this.success=true},
+            (err) => {console.log(err)}
+        );
     }
 }

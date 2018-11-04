@@ -2,12 +2,16 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { IuserDetails } from "./data-models/user"
 
 @Injectable()
 export class UserService {
 
   // http options used for making API calls
   private httpOptions: any;
+
+  private httpOptionsAllowAny: any;
 
   // the actual JWT token
   public token: string;
@@ -21,7 +25,8 @@ export class UserService {
   // error messages received from the login attempt
   public errors: any = [];
 
-
+  public interface
+  public user_details: IuserDetails = new IuserDetails();
 
   constructor(private http: HttpClient, private _cookieService: CookieService, private router: Router) {
     // CSRF token is needed to make API calls work when logged in
@@ -31,9 +36,14 @@ export class UserService {
       csrf = '';
     }
     this.httpOptions = {
-      headers: new HttpHeaders({'Content-Type': 'application/json',
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
         'X-CSRFToken': csrf,
-        'Authorization': 'JWT ' + this.token })
+        'Authorization': 'JWT ' + this.token
+      })
+    };
+    this.httpOptionsAllowAny = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'X-CSRFToken': csrf })
     };
   }
 
@@ -83,11 +93,14 @@ export class UserService {
       csrf = '';
     }
     this.httpOptions = {
-      headers: new HttpHeaders({'Content-Type': 'application/json',
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
         'X-CSRFToken': csrf,
-        'Authorization': 'JWT ' + this.token })
+        'Authorization': 'JWT ' + this.token
+      })
     };
     localStorage.setItem["cmc-auth-token"] = (this.token);
+    this.getEmployeeDetails();
     // decode the token to read the username and expiration timestamp
     const token_parts = this.token.split(/\./);
     const token_decoded = JSON.parse(window.atob(token_parts[1]));
@@ -96,43 +109,50 @@ export class UserService {
   }
 
   // Uses http.post() to register a employee
-  public register(employee) {
-    this.http.post('/register/', JSON.stringify(employee), this.httpOptions).subscribe(
-      data => {
-        console.log('registration success', data);
-      },
-      err => {
-        console.error('registration error', err);
-        this.errors = err['error'];
-      }
-    );
+  public register(employee):Observable<any> {
+    return this.http.post('/register/', JSON.stringify(employee), this.httpOptionsAllowAny)
   }
 
 
   // Uses http.post() to create a group
-  public createGroup(group) {
-    this.http.post('/create-group/', JSON.stringify(group), this.httpOptions).subscribe(
-      data => {
-        console.log('registration success', data);
-      },
-      err => {
-        console.error('registration error', err);
-        this.errors = err['error'];
+  public createGroup(group):Observable<any> {
+    return this.http.post('/create-group/', JSON.stringify(group), this.httpOptions)
+  }
+
+  // Uses http.post() to create a contact
+  public createContact(contact):Observable<any> {
+    return this.http.post('/create-contact/', JSON.stringify(contact), this.httpOptions)
+  }
+
+  // Uses http.get() to get user details
+  public getEmployeeDetails() {
+    this.http.get('/get-current-employee/', this.httpOptions).subscribe(
+      (data) => {
+        this.user_details.first_name = data["first_name"];
+        this.user_details.last_name = data["last_name"];
+        this.user_details.emp_id = data["emp_id"];
+        this.user_details.email = data["email"];
+        this.user_details.user = data["user"];
+        this.user_details.id = data["id"];
+        this.user_details.aadhar_no = data["aadhar_no"];
+      }, (err) => {
+        console.log(err)
       }
     );
   }
 
-  // Uses http.post() to create a group
-  public createContact(contact) {
-    this.http.post('/create-contact/', JSON.stringify(contact), this.httpOptions).subscribe(
-      data => {
-        console.log('registration success', data);
-      },
-      err => {
-        console.error('registration error', err);
-        this.errors = err['error'];
-      }
-    );
+  public getUserDetails() {
+    return this.user_details;
+  }
+
+  public resetUserDetails(){
+    this.user_details.first_name = "";
+    this.user_details.last_name = "";
+    this.user_details.emp_id = null;
+    this.user_details.email = "";
+    this.user_details.user = null;
+    this.user_details.id = null;
+    this.user_details.aadhar_no = "";
   }
 
 }

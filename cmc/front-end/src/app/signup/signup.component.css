@@ -1,0 +1,32 @@
+.cmc-signin-row {
+    width: max-content;
+}
+
+.cmc-signin {
+    display: block;
+    width: max-content;
+    margin: 0 auto;
+    border: 1px solid;
+    border-radius: 10px;
+    background: #a5bfbf;
+    padding: 25px 100px;
+}
+
+.cmc-signin-container {
+    padding: 25px 10px 10px 5px;
+}
+
+.cmc-sighin-button {
+    text-align: right;
+    margin: 30px 0 0 0;
+}
+
+.cmc-sighin-button>button {
+    margin: 0 0 10px 0;
+}
+
+@media screen and (max-width: 767px) {
+    .cmc-signin {
+        padding: 20px
+    }
+}

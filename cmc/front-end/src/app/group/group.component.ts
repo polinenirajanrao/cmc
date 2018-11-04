@@ -8,6 +8,9 @@ import { UserService } from "../user.service";
 })
 export class GroupComponent implements OnInit {
     group: IGroup;
+    response: any;
+    err: any;
+    success: boolean = false;
     constructor(private _UserService: UserService) {
         this.group = new IGroup();
     }
@@ -15,6 +18,9 @@ export class GroupComponent implements OnInit {
 
     }
     createGroup() {
-        this._UserService.createGroup(this.group)
+        this._UserService.createGroup(this.group).subscribe(
+            (data) => {this.response = data; this.success=true},
+            (err) => {console.log(err)}
+        )
     }
 }

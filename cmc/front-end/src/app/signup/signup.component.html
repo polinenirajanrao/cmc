@@ -1,23 +1,46 @@
-<div>
-    <div>
-        <input type="email" [(ngModel)]="employee.email"/>
+<div class="cmc-signin-container">
+    <div class="cmc-signin" *ngIf="!success">
+        <div class="cmc-signin-row">
+            Email<br /><input type="email" class="form-control" [(ngModel)]="employee.email" />
+        </div>
+        <br />
+        <div class="cmc-signin-row">
+            First name<br /><input type="text" class="form-control" [(ngModel)]="employee.first_name" />
+        </div>
+        <br />
+        <div class="cmc-signin-row">
+            Last name<br /><input type="text" class="form-control" [(ngModel)]="employee.last_name" />
+        </div>
+        <br />
+        <div class="cmc-signin-row">
+            Aadhar<br /><input type="text" class="form-control" [(ngModel)]="employee.aadhar" />
+        </div>
+        <br />
+        <div class="cmc-signin-row">
+            Employee Id<br /><input type="number" class="form-control" [(ngModel)]="employee.employee_id" />
+        </div>
+        <br />
+        <div class="cmc-signin-row">
+            Password<input type="password" class="form-control" [(ngModel)]="employee.password" />
+            <div class="cmc-sighin-button">
+                <button class="btn btn-sm btn-primary" (click)="signUpUser()">sign Up</button>
+                <br/><a routerLink="/signin">Back to login?</a>
+            </div>
+        </div>
+        <br />
     </div>
-    <div>
-        <input type="text" [(ngModel)]="employee.first_name"/>
-    </div>
-    <div>
-        <input type="text" [(ngModel)]="employee.last_name" />
-    </div>
-    <div>
-        <input type="text" [(ngModel)]="employee.aadhar"/>
-    </div>
-    <div>
-        <input type="text" [(ngModel)]="employee.employee_id" />
-    </div>
-    <div>
-        <input type="password" [(ngModel)]="employee.password" />
-    </div>
-    <div>
-        <button (click)="signUpUser()">sign up</button>
+    <div *ngIf="success" class="cmc-signin-container">
+        <div class="cmc-signin">
+            <div class="cmc-signin-row">
+                Registration Success please go to sign in page
+            </div>
+            <div class="cmc-signin-row">
+                <div class="cmc-sighin-button">
+                    <a routerLink="/signin">Back to login?</a>
+                </div>
+            </div>
+            <br />
+
+        </div>
     </div>
 </div>

@@ -32,6 +32,11 @@
 .cmc-user-info-wrapper {
     width: 20%;
     display: table-cell;
+    color: #eeffd4;
+    text-align: right;
+}
+.cmc-user-info-wrapper >span{
+    display: block;
 }
 
 .cmc-app-container {

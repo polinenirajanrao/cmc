@@ -13,8 +13,8 @@
                 <th>
                     status
                 </th>
-                <th>
-                    Toggle status
+                <th class="text-center">
+                    Actions
                 </th>
             </thead>
             <tbody>
@@ -25,17 +25,17 @@
                     <td>
                         {{group.is_active}}
                     </td>
-                    <td>
-                        action to make inactive
+                    <td class="text-center">
+                        <button (click)="createContact()" class="btn btn-sm btn-danger">Delete</button>&nbsp;<button (click)="createContact()" class="btn btn-sm btn-primary">View</button>&nbsp;<button (click)="createContact()" class="btn btn-sm btn-success">Add Contact</button>
                     </td>
                 </tr>
             </tbody>
-        </table>        
+        </table>
     </div>
     <hr>
     <div class="cmc-ribbon">
-        <h3 class="text-secondary">My Contacts</h3>
-        <button (click)="createContact()" class="btn btn-sm btn-secondary">create contact</button>
+        <h3 class="text-primary">My Contacts</h3>
+        <button (click)="createContact()" class="btn btn-sm btn-primary">create contact</button>
     </div>
     <hr>
     <div class="table-responsive">
@@ -45,22 +45,22 @@
                     Name
                 </th>
                 <th>
-                    status
+                    Email
                 </th>
                 <th>
-                    Toggle status
+                    Phone
                 </th>
             </thead>
             <tbody>
-                <tr *ngFor='let group of contact'>
+                <tr *ngFor='let contact of contacts'>
                     <td>
-                        {{group.first_name}}
+                        {{contact.first_name}}{{" "+contact.last_name}}
                     </td>
                     <td>
-                        {{group.is_active}}
+                        {{contact.email}}
                     </td>
                     <td>
-                        -----
+                        {{contact.phone}}
                     </td>
                 </tr>
             </tbody>

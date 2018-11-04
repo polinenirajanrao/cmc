@@ -8,6 +8,9 @@ import { UserService } from "../user.service";
 })
 export class ContactComponent implements OnInit {
     contact: IContact;
+    response: any;
+    err: any;
+    success: boolean = false;
     constructor(private _UserService: UserService) {
         this.contact = new IContact();
     }
@@ -15,6 +18,9 @@ export class ContactComponent implements OnInit {
 
     }
     createContact() {
-        this._UserService.createContact(this.contact)
+        this._UserService.createContact(this.contact).subscribe(
+            (data) => {this.response = data; this.success=true},
+            (err) => {console.log(err)}
+        )
     }
 }

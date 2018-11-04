@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Iuser } from '../data-models/user';
-import {UserService} from "../user.service";
+import { UserService } from "../user.service";
 @Component({
     selector: 'sign-in',
     templateUrl: './signin.component.html',
@@ -8,10 +8,14 @@ import {UserService} from "../user.service";
 })
 export class SignInComponent implements OnInit {
     user: Iuser;
-    constructor(private _UserService:UserService) {
+    constructor(private _UserService: UserService) {
         this.user = new Iuser();
     }
     ngOnInit() {
+        this._UserService.logout();
+        setTimeout(() => {
+            this._UserService.resetUserDetails();
+        }, 0);
 
     }
     signInUser() {

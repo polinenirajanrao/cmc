@@ -1,17 +1,40 @@
-<div>
-    <div>
-        <input type="email" [(ngModel)]="contact.email"/>
+<div class="cmc-signin-container">
+    <div class="cmc-signin" *ngIf="!success">
+        <div class="cmc-signin-row">
+            Email<br /><input type="email" class="form-control" [(ngModel)]="contact.email" />
+        </div>
+        <br />
+        <div class="cmc-signin-row">
+            First name<br /><input type="text" class="form-control" [(ngModel)]="contact.first_name" />
+        </div>
+        <br />
+        <div class="cmc-signin-row">
+            Last name<br /><input type="text" class="form-control" [(ngModel)]="contact.last_name" />
+        </div>
+        <br />
+        <div class="cmc-signin-row">
+            Phone<br /><input type="text" class="form-control" [(ngModel)]="contact.phone" />
+        </div>
+        <div class="cmc-signin-row">
+            <div class="cmc-sighin-button">
+                <button class="btn btn-sm btn-primary" (click)="createContact(contact)">Add Contact</button>
+                <br/><a routerLink="/home">Back to home</a>
+            </div>
+        </div>
+        <br />
     </div>
-    <div>
-        <input type="text" [(ngModel)]="contact.first_name"/>
-    </div>
-    <div>
-        <input type="text" [(ngModel)]="contact.last_name" />
-    </div>
-    <div>
-        <input type="number" [(ngModel)]="contact.phone"/>
-    </div>
-    <div>
-        <button (click)="createContact(contact)">sign up</button>
+    <div *ngIf="success" class="cmc-signin-container">
+        <div class="cmc-signin">
+            <div class="cmc-signin-row">
+                Contact added successfully!
+            </div>
+            <div class="cmc-signin-row">
+                <div class="cmc-sighin-button">
+                    <a routerLink="/home">Back to home</a>
+                </div>
+            </div>
+            <br />
+
+        </div>
     </div>
 </div>
