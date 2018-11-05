@@ -10,6 +10,7 @@ import { SignUpComponent } from "./signup/signup.component"
 import { HomeComponent } from "./home/home.component"
 import { GroupComponent } from "./group/group.component"
 import { ContactComponent } from "./contact/contact.component"
+import { GroupViewComponent } from "./group-view/group-view.component"
 //Services
 import { UserService } from "./user.service";
 import { ApiService } from "./api.service";
@@ -24,7 +25,8 @@ import { HttpModule, XSRFStrategy, CookieXSRFStrategy } from '@angular/http';
     SignUpComponent,
     HomeComponent,
     GroupComponent,
-    ContactComponent
+    ContactComponent,
+    GroupViewComponent
   ],
   imports: [
     BrowserModule, FormsModule, HttpClientModule, RouterModule, RouterModule.forRoot(routes), CookieModule.forRoot(),

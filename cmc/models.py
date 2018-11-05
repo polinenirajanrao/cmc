@@ -32,7 +32,7 @@ class Group(models.Model):
 
 
 # GroupContractMap model, when a Employee adds a contact to group the mapping is saved here
-class GroupContractMap(models.Model):
+class GroupContactMap(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     contact = models.ForeignKey(Contact, on_delete=models.CASCADE)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)

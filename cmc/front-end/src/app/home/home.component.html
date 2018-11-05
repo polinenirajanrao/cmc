@@ -26,7 +26,9 @@
                         {{group.is_active}}
                     </td>
                     <td class="text-center">
-                        <button (click)="createContact()" class="btn btn-sm btn-danger">Delete</button>&nbsp;<button (click)="createContact()" class="btn btn-sm btn-primary">View</button>&nbsp;<button (click)="createContact()" class="btn btn-sm btn-success">Add Contact</button>
+                        <!-- <button (click)="createContact()" class="btn btn-sm btn-danger">Delete</button>&nbsp; -->
+                        <button routerLink="/group-view/{{group.id}}" class="btn btn-sm btn-primary">View</button>&nbsp;
+                        <!-- <button (click)="createContact()" class="btn btn-sm btn-success">Add Contact</button> -->
                     </td>
                 </tr>
             </tbody>

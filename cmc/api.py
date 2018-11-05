@@ -2,9 +2,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions
 from django.contrib.auth.models import User
-from .models import Employee, Contact, Group, GroupContractMap
+from .models import Employee, Contact, Group, GroupContactMap
 from rest_framework import views
-from .serializers import ContactSerializer, GroupSerializer, GroupContractMapSerializer, EmployeeSerializer
+from .serializers import ContactSerializer, GroupSerializer, GroupContactMapSerializer, EmployeeSerializer
 
 
 class RegisterEmployee(APIView):
@@ -80,13 +80,17 @@ class GetContactsForGroup(views.APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request):
-        queryset = GroupContractMap.objects.filter(
-            employee_id=request.data.get("employee_id"),
-            group_id=request.data.get("group_id"))
-        serializer = GroupContractMapSerializer
-        permission_classes = (permissions.IsAuthenticated,)
+        try:
+            employee = Employee.objects.filter(user=self.request.user).first()
+            queryset = GroupContactMap.objects.filter(
+                employee=employee,
+                group=Group.objects.filter(id=request.GET.get("group_id")).first())
+            serializer = GroupContactMapSerializer(queryset, many=True)
+            permission_classes = (permissions.IsAuthenticated,)
 
-        return Response(serializer.data)
+            return Response(serializer.data)
+        except Exception as e:
+            return Response("failed" + str(e))
 
 
 class CreateGroup(APIView):
@@ -169,11 +173,11 @@ class AddContactToGroup(APIView):
             group_id = request.data.get("group_id")
             employee = Employee.objects.filter(user=self.request.user).first()
 
-            groupContractMap = GroupContractMap()
-            groupContractMap.contact_id = contact_id
-            groupContractMap.employee = employee
-            groupContractMap.group_id = group_id
-            groupContractMap.save()
+            groupContactMap = GroupContactMap()
+            groupContactMap.contact_id = contact_id
+            groupContactMap.employee = employee
+            groupContactMap.group_id = group_id
+            groupContactMap.save()
 
             return Response("Contact saved to group.")
         except Exception as e:
@@ -247,4 +251,83 @@ class EmployeeDetails(APIView):
             return Response(serializer.data)
         except Exception as e:
             return Response("failed"+ str(e))
+
+
+class EmployeeDetails(APIView):
+    """
+    View to get details of logged in employee
+    only authenticated users can access this view.
+    """
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, format=None):
+        """
+        details of logged in employee
+        """
+        try:
+            # retrieve details from post request
+            queryset = Employee.objects.filter(user=self.request.user).first()
+            serializer = EmployeeSerializer(queryset)
+
+            return Response(serializer.data)
+        except Exception as e:
+            return Response("failed"+ str(e))
+
+
+class DeleteGroup(APIView):
+    """
+    View to delete group
+    """
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request, format=None):
+        """
+        delete group
+        """
+        try:
+            group_id = request.data.get("group_id")
+            Group.objects.filter(id=group_id).delete()
+            return Response("group deleted")
+        except Exception as e:
+            return Response("failed"+ str(e))
+
+
+class DeleteContact(APIView):
+    """
+    View to get delete contact
+    """
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request, format=None):
+        """
+        delete contact
+        """
+        try:
+            contact_id = request.data.get("contact_id")
+            Contact.objects.filter(id=contact_id).delete()
+            return Response("contact deleted")
+        except Exception as e:
+            return Response("failed"+ str(e))
+
+
+class GroupDetails(APIView):
+    """
+    View to get details of logged in employee
+    only authenticated users can access this view.
+    """
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, format=None):
+        """
+        details of logged in employee
+        """
+        try:
+            # retrieve details from post request
+            queryset = Group.objects.filter(id=self.request.GET.get("group_id")).first()
+            serializer = GroupSerializer(queryset)
+
+            return Response(serializer.data)
+        except Exception as e:
+            return Response("failed"+ str(e))
+
 

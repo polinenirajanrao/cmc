@@ -155,4 +155,29 @@ export class UserService {
     this.user_details.aadhar_no = "";
   }
 
+  // Uses http.post() to deactivate a group
+  public deactivateGroup(group_id):Observable<any> {
+    return this.http.post('/deactivate-group/', JSON.stringify({'group_id': group_id}), this.httpOptions)
+  }
+  
+  // Uses http.post() to deactivate a contact
+  public deactivateContact(contact_id):Observable<any> {
+    return this.http.post('/deactivate-contact/', JSON.stringify({'contact_id': contact_id}), this.httpOptions)
+  }
+
+  // Uses http.post() to add a contact to group
+  public addContacttoGroup(contact_id, group_id):Observable<any> {
+    return this.http.post('/add-contact-to-group/', JSON.stringify({'contact_id': contact_id, 'group_id': group_id}), this.httpOptions)
+  }
+
+  // Uses http.post() to delete a group
+  public deleteGroup(group_id):Observable<any> {
+    return this.http.post('/delete-group/', JSON.stringify({'group_id': group_id}), this.httpOptions)
+  }
+
+  // Uses http.post() to delet a contact
+  public deleteContact(contact_id):Observable<any> {
+    return this.http.post('/delete-contact/', JSON.stringify({'contact_id': contact_id}), this.httpOptions)
+  }
+
 }

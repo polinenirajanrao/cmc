@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { CookieService } from 'ngx-cookie';
 import { UserService } from './user.service';
 import { Observable } from 'rxjs';
@@ -45,6 +45,15 @@ export class ApiService {
     // Uses http.get() to get contacts of an employee
     public getContactsForEmployee():Observable<any> {
       return this.http.get('/contacts-for-employee/', this.httpOptions)
-    }  
+    }
 
+    // Uses http.get() to get contacts of an employee
+    public getContactsForGroup(group_id:string):Observable<any> {
+      return this.http.get(`/contacts-for-group/?group_id=${group_id}`, this.httpOptions)
+    }
+
+    // Uses http.get() to get group details
+    public getGroupDetails(group_id:string):Observable<any> {
+      return this.http.get(`/group-details/?group_id=${group_id}`, this.httpOptions)
+    }
 }
