@@ -82,10 +82,14 @@ export class UserService {
     this.token = null;
     this.token_expires = null;
     this.username = null;
+    localStorage.setItem('jwt-token', undefined);
+    localStorage.setItem('first_name', undefined);
+    localStorage.setItem('last_name', undefined);
   }
 
   private updateData(token) {
     this.token = token;
+    localStorage.setItem('jwt-token', token);
     this.errors = [];
     let csrf = this._cookieService.get("csrftoken");
     // the Angular HttpHeaders class throws an exception if any of the values are undefined
@@ -99,7 +103,6 @@ export class UserService {
         'Authorization': 'JWT ' + this.token
       })
     };
-    localStorage.setItem["cmc-auth-token"] = (this.token);
     this.getEmployeeDetails();
     // decode the token to read the username and expiration timestamp
     const token_parts = this.token.split(/\./);
@@ -130,6 +133,8 @@ export class UserService {
       (data) => {
         this.user_details.first_name = data["first_name"];
         this.user_details.last_name = data["last_name"];
+        localStorage.setItem('first_name', this.user_details.first_name);
+        localStorage.setItem('last_name', this.user_details.last_name);
         this.user_details.emp_id = data["emp_id"];
         this.user_details.email = data["email"];
         this.user_details.user = data["user"];

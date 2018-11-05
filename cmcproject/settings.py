@@ -139,6 +139,13 @@ REST_FRAMEWORK = {
 
 # for JWT authentication between angular and django
 JWT_AUTH = {
+    # how long the original token is valid for
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=2),
+
+    # allow refreshing of tokens
     'JWT_ALLOW_REFRESH': True,
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=3600),
+
+    # this is the maximum time AFTER the token was issued that
+    # it can be refreshed.  expired tokens can't be refreshed.
+    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
 }
