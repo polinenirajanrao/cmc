@@ -1,26 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { IEmployee } from '../data-models/employee';
-import {UserService} from "../user.service";
+import { UserService } from '../user.service';
+import { NgForm } from '@angular/forms';
 @Component({
     selector: 'sign-up',
     templateUrl: './signup.component.html',
     styleUrls: ['./signup.component.css']
 })
 export class SignUpComponent implements OnInit {
+    @ViewChild("signUpForm") currentForm: NgForm;
     employee: IEmployee;
     response: any;
     err: any;
     success: boolean = false;
-    constructor(private _UserService:UserService) {
+    constructor(private _UserService: UserService) {
         this.employee = new IEmployee();
     }
     ngOnInit() {
 
     }
     signUpUser() {
-        this._UserService.register(this.employee).subscribe(
-            (data) => {this.response = data; this.success=true},
-            (err) => {console.log(err)}
-        );
+        if (this.currentForm.invalid) {
+            Object.keys(this.currentForm.controls).forEach(key => {
+                this.currentForm.controls[key].markAsTouched();
+            });
+            // alert("Please fill all the required fields.")
+        } else {
+            this._UserService.register(this.employee).subscribe(
+                (data) => { this.response = data; this.success = true },
+                (err) => { console.log(err) }
+            );
+        }
     }
 }
