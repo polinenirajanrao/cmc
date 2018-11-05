@@ -21,6 +21,8 @@ You need the following to run this app:
 
 ## Setup
 * create a virtual environment(optional)
+* have npm installed
+* have latest angular cli installed
 * clone the repo
 
 Open a terminal at the repo root, and run the following:
