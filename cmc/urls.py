@@ -19,13 +19,14 @@ urlpatterns = [
     path(r'groups-for-employee/', api.GetGroupsForEmployee.as_view()),
     path(r'contacts-for-employee/', api.GetContactsForEmployee.as_view()),
     path(r'contacts-for-group/', api.GetContactsForGroup.as_view()),
-    path(r'add-contact-to-group/', api.AddContactToGroup.as_view()),
     path(r'get-current-employee/', api.EmployeeDetails.as_view()),
-    path(r'deactivate-group/', api.DeactivateGroup.as_view()),
-    path(r'deactivate-contact/', api.DeactivateContact.as_view()),
+    path(r'toggle-group-status/', api.ToggleGroupStatus.as_view()),
+    path(r'toggle-contact-status/', api.ToggleContactStatus.as_view()),
     path(r'delete-contact/', api.DeleteContact.as_view()),
     path(r'delete-group/', api.DeleteGroup.as_view()),
     path(r'group-details/', api.GroupDetails.as_view()),
+    path('contact/<int:pk>/', views.ContactDetail.as_view()),
+    path('group/<int:pk>/', views.ContactDetail.as_view()),
 ]
 
 urlpatterns += router.urls

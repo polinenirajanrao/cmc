@@ -4,6 +4,7 @@ export interface IContact {
     last_name: string;
     phone: string;
     created_emp: string;
+    group_id: string;
 }
 export class IContact implements IContact {
     constructor() {
@@ -12,5 +13,6 @@ export class IContact implements IContact {
         this.last_name = "";
         this.phone = "";
         this.created_emp = "";
+        this.group_id = "";
     }
 }

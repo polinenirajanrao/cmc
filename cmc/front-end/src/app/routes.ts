@@ -11,7 +11,7 @@ export const routes: Routes = [
     { path: '', redirectTo: '/signin', pathMatch: 'full' },
     { path: 'signup', component: SignUpComponent },
     { path: 'home', component: HomeComponent },
-    { path: 'new-contact', component: ContactComponent },
+    { path: 'new-contact', component: ContactComponent, data : {group_id:"", contact:{}} },
     { path: 'new-group', component: GroupComponent },
     { path: 'group-view/:group_id', component: GroupViewComponent },
 ];    

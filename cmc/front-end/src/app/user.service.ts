@@ -48,18 +48,8 @@ export class UserService {
   }
 
   // Uses http.post() to get an auth token from djangorestframework-jwt endpoint
-  public login(user) {
-    this.http.post('/api-token-auth/', JSON.stringify(user), this.httpOptions).subscribe(
-      data => {
-        console.log('login success', data);
-        this.updateData(data['token']);
-        this.router.navigate(['/home']);
-      },
-      err => {
-        console.error('login error', err);
-        this.errors = err['error'];
-      }
-    );
+  public login(user):Observable<any> {
+    return this.http.post('/api-token-auth/', JSON.stringify(user), this.httpOptions);
   }
 
   /**
@@ -87,7 +77,7 @@ export class UserService {
     localStorage.setItem('last_name', undefined);
   }
 
-  private updateData(token) {
+  public updateData(token) {
     this.token = token;
     localStorage.setItem('jwt-token', token);
     this.errors = [];
@@ -161,13 +151,13 @@ export class UserService {
   }
 
   // Uses http.post() to deactivate a group
-  public deactivateGroup(group_id):Observable<any> {
-    return this.http.post('/deactivate-group/', JSON.stringify({'group_id': group_id}), this.httpOptions)
+  public toggleGroupStatus(group_id):Observable<any> {
+    return this.http.post('/toggle-group-status/', JSON.stringify({'group_id': group_id}), this.httpOptions)
   }
   
   // Uses http.post() to deactivate a contact
-  public deactivateContact(contact_id):Observable<any> {
-    return this.http.post('/deactivate-contact/', JSON.stringify({'contact_id': contact_id}), this.httpOptions)
+  public toggleContactStatus(contact_id):Observable<any> {
+    return this.http.post('/toggle-contact-status/', JSON.stringify({'contact_id': contact_id}), this.httpOptions)
   }
 
   // Uses http.post() to add a contact to group
@@ -183,6 +173,26 @@ export class UserService {
   // Uses http.post() to delet a contact
   public deleteContact(contact_id):Observable<any> {
     return this.http.post('/delete-contact/', JSON.stringify({'contact_id': contact_id}), this.httpOptions)
+  }
+
+  // Uses http.post() to delet a contact
+  public getContact(contact_id):Observable<any> {
+    return this.http.get('/contact/'+contact_id, this.httpOptions)
+  }
+
+  // Uses http.post() to delet a contact
+  public getGroup(group_id):Observable<any> {
+    return this.http.get('/group/'+group_id, this.httpOptions)
+  }
+
+  // Uses http.put() to edit a contact
+  public putContact(contact):Observable<any> {
+    return this.http.put('/contact/' + contact.id, JSON.stringify(contact), this.httpOptions)
+  }
+
+  // Uses http.put() to edit a GROUP
+  public putGroup(group):Observable<any> {
+    return this.http.put('/group/' + group.id, JSON.stringify(group), this.httpOptions)
   }
 
 }

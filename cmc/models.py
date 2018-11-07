@@ -14,16 +14,6 @@ class Employee(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,)
 
 
-# Contact model, this has relationship with employee who crated this Contact
-class Contact(models.Model):
-    email = models.EmailField(max_length=70, blank=True, null=True, unique=True)
-    first_name = models.CharField(max_length=25, blank=False)
-    last_name = models.CharField(max_length=25, blank=False)
-    phone = models.CharField(max_length=15, blank=False)
-    created_emp = models.ForeignKey(Employee, on_delete=models.CASCADE)
-    is_active = models.BooleanField(default=True)
-
-
 # Group model, this has relationship with employee who crated this Group
 class Group(models.Model):
     group_name = models.CharField(max_length=25, blank=False, null=True)
@@ -31,12 +21,16 @@ class Group(models.Model):
     is_active = models.BooleanField(default=True)
 
 
-# GroupContractMap model, when a Employee adds a contact to group the mapping is saved here
-class GroupContactMap(models.Model):
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
-    contact = models.ForeignKey(Contact, on_delete=models.CASCADE)
+# Contact model, this has relationship with employee who crated this Contact
+class Contact(models.Model):
+    email = models.EmailField(max_length=70, blank=True, null=True, unique=True)
+    first_name = models.CharField(max_length=25, blank=False)
+    last_name = models.CharField(max_length=25, blank=False)
+    phone = models.CharField(max_length=15, blank=False)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+
 
 # System Configuration model to save configuration related data, saved as key value pairs
 class SystemConfiguration(models.Model):

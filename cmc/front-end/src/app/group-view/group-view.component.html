@@ -1,7 +1,7 @@
 <div class="container cmc-home-container">
     <div class="cmc-ribbon">
-        <h3 class="text-primary">Group {{" " + group.group_name}}</h3>
-        <button (click)="addContact()" class="btn btn-sm btn-primary">addContact</button>
+        <h3 class="text-primary cmc-center">{{group.group_name}} </h3> <span style="font-size:20px"> >> Contacts </span>
+        <button [routerLink]="['/new-contact/']" [queryParams]="{group_id: group.id}" class="btn btn-sm btn-primary">New Contact</button>
     </div>
     <hr>
     <div class="table-responsive">
@@ -17,26 +17,35 @@
                     Phone
                 </th>
                 <th>
-                    Phone
+                    Activated
+                </th>
+                <th class="text-center">
+                    Actions
                 </th>
             </thead>
             <tbody>
                 <tr *ngFor='let contact of contacts'>
                     <td>
-                        {{contacts.contact.email}}
+                        {{contact.email}}
                     </td>
                     <td>
-                        {{contacts.contact.first_name + " "}}{{contacts.contact.last_name}}
+                        {{contact.first_name + " "}}{{contact.last_name}}
                     </td>
                     <td>
-                        {{contacts.contact.phone}}
+                        {{contact.phone}}
+                    </td>
+                    <td>
+                        <label class="switch">
+                            <input type="checkbox" [checked]="contact.is_active" (change)="onStatusChange($event, contact.id)">
+                            <span class="slider round"></span>
+                        </label>
                     </td>
                     <td class="text-center">
-                        <button (click)="createContact()" class="btn btn-sm btn-danger">Delete</button>&nbsp;<button (click)="createContact()"
-                            class="btn btn-sm btn-primary">View</button>&nbsp;<button (click)="createContact()" class="btn btn-sm btn-success">Add
-                            Contact</button>
+                        <button (click)="deleteContact(contact.id)" class="btn btn-sm btn-danger">Delete</button>&nbsp;<button
+                        [routerLink]="['/new-contact/']" [queryParams]="{group_id: group.id, contact_id: contact.id, is_edit: true}" class="btn btn-sm btn-primary">Edit</button>
                     </td>
                 </tr>
+                <span *ngIf='contacts?.length == 0'><br/><em>No contacts found in group</em></span>
             </tbody>
         </table>
     </div>

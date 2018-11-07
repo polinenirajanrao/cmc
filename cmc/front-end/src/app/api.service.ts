@@ -43,17 +43,17 @@ export class ApiService {
     }
 
     // Uses http.get() to get contacts of an employee
-    public getContactsForEmployee():Observable<any> {
-      return this.http.get('/contacts-for-employee/', this.httpOptions)
-    }
-
-    // Uses http.get() to get contacts of an employee
     public getContactsForGroup(group_id:string):Observable<any> {
       return this.http.get(`/contacts-for-group/?group_id=${group_id}`, this.httpOptions)
     }
 
     // Uses http.get() to get group details
     public getGroupDetails(group_id:string):Observable<any> {
+      return this.http.get(`/group-details/?group_id=${group_id}`, this.httpOptions)
+    }
+
+    // Uses http.get() to get group details
+    public deleteGroup(group_id:string):Observable<any> {
       return this.http.get(`/group-details/?group_id=${group_id}`, this.httpOptions)
     }
 }

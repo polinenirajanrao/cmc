@@ -13,10 +13,22 @@ import { Observable } from 'rxjs';
 export class GroupViewComponent implements OnInit {
     contacts: any;
     groupId: string;
-    group: {};
+    group: {
+        'group_name': undefined,
+        'id': undefined,
+        'employee': undefined,
+        'is_active': undefined
+    };
+
     public groups: Observable<IGroup[]>
     constructor(private _UserService: UserService, private _ApiService: ApiService, private router: Router, private _activeRoute: ActivatedRoute) {
-        this.contacts = undefined;
+        this.contacts = [];
+        this.group = {
+            'group_name': undefined,
+            'id': undefined,
+            'employee': undefined,
+            'is_active': undefined
+        };
     }
     ngOnInit() {
         this.groupId = this._activeRoute.snapshot.paramMap.get("group_id");
@@ -32,7 +44,31 @@ export class GroupViewComponent implements OnInit {
     createGroup() {
         this.router.navigate(['/new-group']);
     }
-    createContact() {
-        this.router.navigate(['/new-contact']);
+
+    editContact(contact){
+        this.router.navigate(['/new-contact/{{groupId.id}}', { 'contact': contact, 'is_edit': true}]);
+    }
+
+    deleteContact(contact_id) {
+        if (confirm("Do you really want to delete the contact?")) {
+            this._UserService.deleteContact(contact_id).subscribe(
+                (resp) => {
+                        this._ApiService.getContactsForGroup(this.groupId).subscribe(
+                            (resp) => { this.contacts = resp },
+                            (err) => { console.log(err); }
+                        ), alert("Contact Deleted")
+                },
+                (err) => { console.log(err); }
+            )
+        } else {
+            alert("cancelled")
+        }
+    }
+
+    onStatusChange(eve: any, contact_id) {
+        this._UserService.toggleContactStatus(contact_id).subscribe(
+            (resp) => { alert("contact status changed"); },
+            (err) => { console.log(err), alert("changing contact status failed"); }
+        )
     }
 }

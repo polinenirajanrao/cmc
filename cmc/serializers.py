@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 
-from .models import Employee, Contact, Group, GroupContactMap, SystemConfiguration
+from .models import Employee, Contact, Group, SystemConfiguration
 # this file holds all serializers required fot rest
 # communication between django and angular app
 
@@ -32,13 +32,6 @@ class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
         fields = '__all__'
-
-
-class GroupContactMapSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = GroupContactMap
-        fields = ('group', 'employee', 'contact', 'is_active')
 
 
 class SystemConfigurationSerializer(serializers.ModelSerializer):

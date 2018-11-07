@@ -1,40 +1,68 @@
-<div class="cmc-signin-container">
-    <div class="cmc-signin" *ngIf="!success">
-        <div class="cmc-signin-row">
-            Email<br /><input type="email" class="form-control" [(ngModel)]="contact.email" />
-        </div>
-        <br />
-        <div class="cmc-signin-row">
-            First name<br /><input type="text" class="form-control" [(ngModel)]="contact.first_name" />
-        </div>
-        <br />
-        <div class="cmc-signin-row">
-            Last name<br /><input type="text" class="form-control" [(ngModel)]="contact.last_name" />
-        </div>
-        <br />
-        <div class="cmc-signin-row">
-            Phone<br /><input type="text" class="form-control" [(ngModel)]="contact.phone" />
-        </div>
-        <div class="cmc-signin-row">
-            <div class="cmc-sighin-button">
-                <button class="btn btn-sm btn-primary" (click)="createContact(contact)">Add Contact</button>
-                <br/><a routerLink="/home">Back to home</a>
-            </div>
-        </div>
-        <br />
-    </div>
-    <div *ngIf="success" class="cmc-signin-container">
-        <div class="cmc-signin">
+<form name="ContactForm" #ContactForm="ngForm">
+    <div class="cmc-signin-container">
+        <div class="cmc-signin" *ngIf="!success">
             <div class="cmc-signin-row">
-                Contact added successfully!
-            </div>
-            <div class="cmc-signin-row">
-                <div class="cmc-sighin-button">
-                    <a routerLink="/home">Back to home</a>
+                Email<br /><input name='email' type="email" [ngModelOptions]="{ updateOn: 'blur' }" #email="ngModel" email required class="form-control" [(ngModel)]="contact.email"
+                />
+                <div *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger">
+                    <div *ngIf="email.errors.required">
+                        Please enter email.
+                    </div>
+                    <div *ngIf="email.errors?.email"> 
+                        Email not valid.
+                   </div>
                 </div>
             </div>
             <br />
-
+            <div class="cmc-signin-row">
+                First name<br /><input name='first_name' #first_name="ngModel" required type="text" class="form-control"
+                    [(ngModel)]="contact.first_name" />
+                <div *ngIf="first_name.invalid && (first_name.dirty || first_name.touched)" class="text-danger">
+                    <div *ngIf="first_name.errors.required">
+                        Please enter first name.
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="cmc-signin-row">
+                Last name<br /><input name='last_name' #last_name="ngModel" required type="text" class="form-control" [(ngModel)]="contact.last_name"
+                />
+                <div *ngIf="last_name.invalid && (last_name.dirty || last_name.touched)" class="text-danger">
+                    <div *ngIf="last_name.errors.required">
+                        Please enter last name.
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="cmc-signin-row">
+                Phone<br /><input name='phone' #phone="ngModel" type="text" required class="form-control" [(ngModel)]="contact.phone"
+                />
+                <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="text-danger">
+                    <div *ngIf="phone.errors.required">
+                        Please enter phone number.
+                    </div>
+                </div>
+            </div>
+            <div class="cmc-signin-row">
+                <div class="cmc-sighin-button">
+                    <button class="btn btn-sm btn-danger" routerLink="/group-view/{{groupId}}">Cancel</button>&nbsp; <button class="btn btn-sm btn-primary"
+                        (click)="createContact(contact)">Save</button>
+                </div>
+            </div>
+            <br />
+        </div>
+        <div *ngIf="success" class="cmc-signin-container">
+            <div class="cmc-signin">
+                <div class="cmc-signin-row">
+                    Contact added successfully!
+                </div>
+                <div class="cmc-signin-row">
+                    <div class="cmc-sighin-button">
+                        <a routerLink="/group-view/{{groupId}}">Back to group</a>
+                    </div>
+                </div>
+                <br />
+            </div>
         </div>
     </div>
-</div>
+</form>

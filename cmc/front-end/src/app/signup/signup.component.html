@@ -2,22 +2,28 @@
     <div class="cmc-signin-container">
         <div class="cmc-signin" *ngIf="!success">
             <div class="cmc-signin-row">
-                Email<br /><input id="email" name="emailId" #emailId="ngModel" pattern="^[A-Za-z0-9._%+-]+@inmar.com$" required type="email" class="form-control"
-                    [(ngModel)]="employee.email" />
-                <div *ngIf="emailId.invalid && (emailId.dirty || emailId.touched)" class="alert alert-danger">
+                Email<br /><input id="email" name="emailId" [ngModelOptions]="{ updateOn: 'blur' }" email #emailId="ngModel"
+                    pattern="^[A-Za-z0-9._%+-]+@inmar.com$" required type="email" class="form-control" [(ngModel)]="employee.email"
+                />
+                <div *ngIf="emailId.invalid && (emailId.dirty || emailId.touched)" class="text-danger">
                     <div *ngIf="emailId.errors.required">
                         Email is required.
                     </div>
-                    <div *ngIf="emailId.errors.pattern">
-                        Email should be of inmar.com
+                    <div *ngIf="!emailId.errors?.email">
+                        <div *ngIf="emailId.errors.pattern">
+                            Email should be of inmar.com
+                        </div>
+                    </div>
+                    <div *ngIf="emailId.errors?.email">
+                        Email not valid.
                     </div>
                 </div>
             </div>
             <br />
             <div class="cmc-signin-row">
-                First name<br /><input type="text" class="form-control" name="first_name" required #first_name="ngModel"
-                    [(ngModel)]="employee.first_name" />
-                <div *ngIf="first_name.invalid && (first_name.dirty || first_name.touched)" class="alert alert-danger">
+                First name<br /><input type="text" class="form-control" name="first_name" [ngModelOptions]="{ updateOn: 'blur' }"
+                    required #first_name="ngModel" [(ngModel)]="employee.first_name" />
+                <div *ngIf="first_name.invalid && (first_name.dirty || first_name.touched)" class="text-danger">
                     <div *ngIf="first_name.errors.required">
                         First Name is required.
                     </div>
@@ -25,9 +31,9 @@
             </div>
             <br />
             <div class="cmc-signin-row">
-                Last name<br /><input type="text" class="form-control" name="last_name" required #last_name="ngModel" [(ngModel)]="employee.last_name"
-                />
-                <div *ngIf="last_name.invalid && (last_name.dirty || last_name.touched)" class="alert alert-danger">
+                Last name<br /><input type="text" class="form-control" name="last_name" [ngModelOptions]="{ updateOn: 'blur' }"
+                    required #last_name="ngModel" [(ngModel)]="employee.last_name" />
+                <div *ngIf="last_name.invalid && (last_name.dirty || last_name.touched)" class="text-danger">
                     <div *ngIf="last_name.errors.required">
                         Last name is required.
                     </div>
@@ -35,22 +41,22 @@
             </div>
             <br />
             <div class="cmc-signin-row">
-                Aadhar<br /><input type="text" maxlength="12" minlength="12" name="aadhar" class="form-control" required #aadhar="ngModel" [(ngModel)]="employee.aadhar"
-                />
-                <div *ngIf="aadhar.invalid && (aadhar.dirty || aadhar.touched)" class="alert alert-danger">
+                Aadhar<br /><input type="text" maxlength="12" minlength="12" name="aadhar" [ngModelOptions]="{ updateOn: 'blur' }"
+                    class="form-control" required #aadhar="ngModel" [(ngModel)]="employee.aadhar" />
+                <div *ngIf="aadhar.invalid && (aadhar.dirty || aadhar.touched)" class="text-danger">
                     <div *ngIf="aadhar.errors.required">
                         Aadhar number is required.
                     </div>
-                    <div *ngIf="aadhar.errors.minlength || aadhar.errors.maxlength" class="alert alert-danger">
+                    <div *ngIf="aadhar.errors.minlength || aadhar.errors.maxlength">
                         Aadhar number should be 12 digit number.
                     </div>
                 </div>
             </div>
             <br />
             <div class="cmc-signin-row">
-                Employee Id<br /><input type="number" name="employee_id" #employee_id="ngModel" required class="form-control"
-                    [(ngModel)]="employee.employee_id" />
-                <div *ngIf="employee_id.invalid && (employee_id.dirty || employee_id.touched)" class="alert alert-danger">
+                Employee Id<br /><input type="number" name="employee_id" [ngModelOptions]="{ updateOn: 'blur' }" #employee_id="ngModel"
+                    required class="form-control" [(ngModel)]="employee.employee_id" />
+                <div *ngIf="employee_id.invalid && (employee_id.dirty || employee_id.touched)" class="text-danger">
                     <div *ngIf="employee_id.errors.required">
                         Employee Id is required.
                     </div>
@@ -58,9 +64,9 @@
             </div>
             <br />
             <div class="cmc-signin-row">
-                Password<input type="password" name="password" pattern="^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\d\W])|(?=.*\W)(?=.*\d))|(?=.*\W)(?=.*[A-Z])(?=.*\d)).{8,}$" #password="ngModel" required class="form-control" [(ngModel)]="employee.password"
-                />
-                <div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger">
+                Password<input type="password" name="password" [ngModelOptions]="{ updateOn: 'blur' }" pattern="^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\d\W])|(?=.*\W)(?=.*\d))|(?=.*\W)(?=.*[A-Z])(?=.*\d)).{8,}$"
+                    #password="ngModel" required class="form-control" [(ngModel)]="employee.password" />
+                <div *ngIf="password.invalid && (password.dirty || password.touched)" class="text-danger">
                     <div *ngIf="password.errors.required">
                         Password is required.
                     </div>

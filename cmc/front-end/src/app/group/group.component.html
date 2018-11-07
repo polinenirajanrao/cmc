@@ -1,14 +1,18 @@
+<form name="GroupForm" #GroupForm="ngForm">
 <div class="cmc-signin-container">
     <div *ngIf="!success" class="cmc-signin">
         <div class="cmc-signin-row">
-            Group name<br /><input type="text" class="form-control" [(ngModel)]="group.group_name" />
+            Group name<br /><input type="text"  name="group_name" [ngModelOptions]="{ updateOn: 'blur' }" #group_name="ngModel" required class="form-control" [(ngModel)]="group.group_name" />
+            <div *ngIf="group_name.invalid && (group_name.dirty || group_name.touched)" class="text-danger">
+                <div *ngIf="group_name.errors.required">
+                    Please enter group name.
+                </div>
+            </div>
         </div>
-        <br/>
         <div class="cmc-signin-row">
             <div class="cmc-sighin-button">
-                <button class="btn btn-sm btn-primary" (click)="createGroup(group)">Create group</button>
-                <br />
-                <a routerLink="/home">Back to home</a>
+                <button class="btn btn-sm btn-danger" routerLink="/home">Cancel</button>&nbsp; <button class="btn btn-sm btn-primary"
+                    (click)="createGroup(group)">Save</button>                
             </div>
         </div>
     </div>
@@ -27,3 +31,4 @@
         </div>
     </div>
 </div>
+</form>

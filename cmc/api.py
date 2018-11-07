@@ -2,9 +2,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions
 from django.contrib.auth.models import User
-from .models import Employee, Contact, Group, GroupContactMap
+from .models import Employee, Contact, Group
 from rest_framework import views
-from .serializers import ContactSerializer, GroupSerializer, GroupContactMapSerializer, EmployeeSerializer
+from .serializers import ContactSerializer, GroupSerializer, EmployeeSerializer
 
 
 class RegisterEmployee(APIView):
@@ -82,10 +82,10 @@ class GetContactsForGroup(views.APIView):
     def get(self, request):
         try:
             employee = Employee.objects.filter(user=self.request.user).first()
-            queryset = GroupContactMap.objects.filter(
+            queryset = Contact.objects.filter(
                 employee=employee,
                 group=Group.objects.filter(id=request.GET.get("group_id")).first())
-            serializer = GroupContactMapSerializer(queryset, many=True)
+            serializer = ContactSerializer(queryset, many=True)
             permission_classes = (permissions.IsAuthenticated,)
 
             return Response(serializer.data)
@@ -123,8 +123,7 @@ class CreateGroup(APIView):
 
 class CreateContact(APIView):
     """
-    View to register a group in system
-
+    View to register a contact in system
     * only authenticated users can access this view.
     """
     permission_classes = (permissions.IsAuthenticated,)
@@ -139,6 +138,7 @@ class CreateContact(APIView):
             first_name = request.data.get("first_name")
             last_name = request.data.get("last_name")
             phone = request.data.get("phone")
+            group_id = request.data.get("group_id")
 
             # create contact
             contact = Contact()
@@ -147,7 +147,8 @@ class CreateContact(APIView):
             contact.last_name = last_name
             contact.phone = phone
             employee = Employee.objects.filter(user=self.request.user).first()
-            contact.created_emp = employee
+            contact.employee = employee
+            contact.group_id = group_id
             contact.save()
 
             return Response("Contact saved.")
@@ -155,81 +156,58 @@ class CreateContact(APIView):
             return Response("Contact creation failed."+ str(e))
 
 
-class AddContactToGroup(APIView):
+class ToggleGroupStatus(APIView):
     """
-    View to add contact to group
-
+    View to toggle group status
     * only authenticated users can access this view.
     """
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request, format=None):
         """
-        add a contact to group
-        """
-        try:
-            # retrieve details from post request
-            contact_id = request.data.get("contact_id")
-            group_id = request.data.get("group_id")
-            employee = Employee.objects.filter(user=self.request.user).first()
-
-            groupContactMap = GroupContactMap()
-            groupContactMap.contact_id = contact_id
-            groupContactMap.employee = employee
-            groupContactMap.group_id = group_id
-            groupContactMap.save()
-
-            return Response("Contact saved to group.")
-        except Exception as e:
-            return Response("adding contact to group failed."+ str(e))
-
-
-class DeactivateGroup(APIView):
-    """
-    View to deactivate to group
-
-    * only authenticated users can access this view.
-    """
-    permission_classes = (permissions.IsAuthenticated,)
-
-    def post(self, request, format=None):
-        """
-        deactivate a group
+        toggle group status
         """
         try:
             # retrieve details from post request
             group_id = request.data.get("group_id")
             group = Group.objects.filter(id=group_id).first()
-            group.is_active = False;
-            group.save()
+            if group.is_active:
+                group.is_active = False;
+                group.save()
+            else:
+                group.is_active = True;
+                group.save()
 
-            return Response("group deactivate")
+            return Response("group status toggled")
         except Exception as e:
             return Response("deactivating group failed."+ str(e))
 
 
-class DeactivateContact(APIView):
+class ToggleContactStatus(APIView):
     """
-    View to deactivate to group
-
+    View to toggle contact status
     * only authenticated users can access this view.
     """
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request, format=None):
         """
-        deactivate a group
+        toggle contact status
         """
         try:
             # retrieve details from post request
             contact_id = request.data.get("contact_id")
             contact = Contact.objects.filter(id=contact_id).first()
-            contact.is_active = False;
-            contact.save()
+            if contact.is_active:
+                contact.is_active = False;
+                contact.save()
+            else:
+                contact.is_active = True;
+                contact.save()
 
-            return Response("contact deactivate")
+            return Response("contact status changed")
         except Exception as e:
-            return Response("contact deactivated."+ str(e))
+            return Response("could not change contact status. "+ str(e))
 
 
 class EmployeeDetails(APIView):
@@ -294,7 +272,7 @@ class DeleteGroup(APIView):
 
 class DeleteContact(APIView):
     """
-    View to get delete contact
+    View to delete contact
     """
     permission_classes = (permissions.IsAuthenticated,)
 

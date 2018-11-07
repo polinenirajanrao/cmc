@@ -1,19 +1,41 @@
-<div class="cmc-signin-container">
-    <div class="cmc-signin">
-        <div class="cmc-signin-row">
-            User name<br /><input type="email" class="form-control" [(ngModel)]="user.username" />
-        </div>
-        <br/>
-        <div class="cmc-signin-row">
-            Password<br /><input type="password" class="form-control" [(ngModel)]="user.password" />
-            <br/>
-            <div class="cmc-sighin-button">
-                <button class="btn btn-sm btn-primary" (click)="signInUser()">sign in</button>
-                <br />
-                <a routerLink="/signup">New User?</a>
+<form name="signInForm" #signInForm="ngForm">
+    <div class="cmc-signin-container">
+        <div class="cmc-signin">
+            <div class="cmc-signin-row">
+                User name<br /><input type="email" name='emailId' [ngModelOptions]="{ updateOn: 'blur' }" pattern="^[A-Za-z0-9._%+-]+@inmar.com$" email required #emailId="ngModel" class="form-control" [(ngModel)]="user.username" />
+                <div *ngIf="emailId.invalid && (emailId.dirty || emailId.touched)" class="text-danger">
+                    <div *ngIf="emailId.errors.required">
+                        Email is required.
+                    </div>
+                    <div *ngIf="!emailId.errors?.email">
+                        <div *ngIf="emailId.errors.pattern">
+                            Email should be of inmar.com
+                        </div>
+                    </div>
+                    <div *ngIf="emailId.errors?.email"> 
+                        Email not valid.
+                   </div>
+                </div>
             </div>
+            <br/>
+            <div class="cmc-signin-row">
+                Password<br /><input type="password" name="password" [ngModelOptions]="{ updateOn: 'blur' }"  #password="ngModel" required class="form-control" [(ngModel)]="user.password" />
+                <div *ngIf="password.invalid && (password.dirty || password.touched)" class="text-danger">
+                    <div *ngIf="password.errors.required">
+                        Password is required.
+                    </div>
+                </div>
+                <br/>
+                <div *ngIf="loginFailed" class="alert alert-danger"> 
+                    {{loginErrorMessage}}
+               </div>
+                <div class="cmc-sighin-button">
+                    <button class="btn btn-sm btn-primary" (click)="signInUser()">sign in</button>
+                    <br />
+                    <a routerLink="/signup">New User?</a>
+                </div>
+            </div>
+            <br />
         </div>
-        <br />
-
     </div>
-</div>
+</form>
