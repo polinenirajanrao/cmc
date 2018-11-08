@@ -13,6 +13,8 @@ export class SignUpComponent implements OnInit {
     response: any;
     err: any;
     success: boolean = false;
+    error: boolean = false;
+    error_message: string;
     constructor(private _UserService: UserService) {
         this.employee = new IEmployee();
     }
@@ -27,8 +29,15 @@ export class SignUpComponent implements OnInit {
             // alert("Please fill all the required fields.")
         } else {
             this._UserService.register(this.employee).subscribe(
-                (data) => { this.response = data; this.success = true },
-                (err) => { console.log(err) }
+                (data) => {
+                this.response = data;
+                    this.success = true
+                },
+                (err) => {
+                    console.log(err);
+                    this.error = true;
+                    this.error_message = err.error;
+                }
             );
         }
     }

@@ -4,8 +4,10 @@ from rest_framework import permissions
 from django.contrib.auth.models import User
 from .models import Employee, Contact, Group
 from rest_framework import views
+from rest_framework import status
 from .serializers import ContactSerializer, GroupSerializer, EmployeeSerializer
 from django.db.models import Q
+from django.db import IntegrityError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
@@ -51,8 +53,10 @@ class RegisterEmployee(APIView):
             employee.save()
 
             return Response("Registration successful")
+        except IntegrityError as e:
+                return Response("Email Id already registered.", status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            return Response("Registration failed."+ str(e))
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
 
 class GetContactsForEmployee(views.APIView):
@@ -132,7 +136,7 @@ class GetContactsForGroup(views.APIView):
 
             return Response(serializer.data)
         except Exception as e:
-            return Response("failed" + str(e))
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
 
 class CreateGroup(APIView):
@@ -160,7 +164,7 @@ class CreateGroup(APIView):
 
             return Response("Group saved.")
         except Exception as e:
-            return Response("Group creation failed."+ str(e))
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
 
 class CreateContact(APIView):
@@ -194,8 +198,10 @@ class CreateContact(APIView):
             contact.save()
 
             return Response("Contact saved.")
+        except IntegrityError as e:
+                return Response("Contact with this Email Id exists.", status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            return Response("Contact creation failed."+ str(e))
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
 
 class ToggleGroupStatus(APIView):
@@ -222,7 +228,7 @@ class ToggleGroupStatus(APIView):
 
             return Response("group status toggled")
         except Exception as e:
-            return Response("deactivating group failed."+ str(e))
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
 
 class ToggleContactStatus(APIView):
@@ -249,7 +255,7 @@ class ToggleContactStatus(APIView):
 
             return Response("contact status changed")
         except Exception as e:
-            return Response("could not change contact status. "+ str(e))
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
 
 class EmployeeDetails(APIView):
@@ -270,7 +276,7 @@ class EmployeeDetails(APIView):
 
             return Response(serializer.data)
         except Exception as e:
-            return Response("failed"+ str(e))
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
 
 class EmployeeDetails(APIView):
@@ -291,7 +297,7 @@ class EmployeeDetails(APIView):
 
             return Response(serializer.data)
         except Exception as e:
-            return Response("failed"+ str(e))
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
 
 class DeleteGroup(APIView):
@@ -309,7 +315,7 @@ class DeleteGroup(APIView):
             Group.objects.filter(id=group_id).delete()
             return Response("group deleted")
         except Exception as e:
-            return Response("failed"+ str(e))
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
 
 class DeleteContact(APIView):
@@ -327,7 +333,7 @@ class DeleteContact(APIView):
             Contact.objects.filter(id=contact_id).delete()
             return Response("contact deleted")
         except Exception as e:
-            return Response("failed"+ str(e))
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
 
 class GroupDetails(APIView):
@@ -348,7 +354,7 @@ class GroupDetails(APIView):
 
             return Response(serializer.data)
         except Exception as e:
-            return Response("failed"+ str(e))
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
 
 class GroupsByName(APIView):
@@ -372,7 +378,7 @@ class GroupsByName(APIView):
 
             return Response(serializer.data)
         except Exception as e:
-            return Response("failed"+ str(e))
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
 
 class SearchContacts(APIView):
@@ -404,4 +410,4 @@ class SearchContacts(APIView):
 
             return Response(serializer.data)
         except Exception as e:
-            return Response("failed"+ str(e))
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)

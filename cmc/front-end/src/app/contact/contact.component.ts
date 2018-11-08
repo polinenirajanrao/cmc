@@ -14,9 +14,11 @@ export class ContactComponent implements OnInit {
     response: any;
     err: any;
     success: boolean = false;
+    error: boolean = false;
     groupId: string;
     contactId: string;
     is_edit: string;
+    error_message: string;
     constructor(private _UserService: UserService, private _activeRoute: ActivatedRoute) {
         this.contact = new IContact();
     }
@@ -39,8 +41,15 @@ export class ContactComponent implements OnInit {
             if (this.is_edit == null) {
                 this.contact.group_id = this.groupId;
                 this._UserService.createContact(this.contact).subscribe(
-                    (data) => { this.response = data; this.success = true },
-                    (err) => { console.log(err) }
+                    (data) => {
+                    this.response = data;
+                        this.success = true
+                    },
+                    (err) => {
+                        console.log(err),
+                        this.error = true;
+                        this.error_message = err.error;
+                    }
                 );
             } else {
                 // this.contact.group_id = this.groupId;

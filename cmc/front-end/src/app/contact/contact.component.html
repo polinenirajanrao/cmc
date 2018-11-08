@@ -50,6 +50,9 @@
                 </div>
             </div>
             <br />
+            <div *ngIf="error" class="alert alert-danger">
+                    {{error_message}}
+            </div>
         </div>
         <div *ngIf="success" class="cmc-signin-container">
             <div class="cmc-signin">
