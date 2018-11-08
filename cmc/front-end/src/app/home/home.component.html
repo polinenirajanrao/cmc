@@ -4,6 +4,20 @@
         <button (click)="createGroup()" class="btn btn-sm btn-primary">New Group</button>
     </div>
     <hr>
+    <div class="input-group">
+        <form class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+                <select class="form-control">
+                    <option value=''> Filter By Name </option>
+                </select>
+                <input name="search-text" type="text" [(ngModel)]='searchText' class="form-control" placeholder="Search Text">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" (click)=searchByName(searchText) id="search" style="height:34px" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                </span>
+            </div>
+        </form>
+    </div>
+    <hr>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -31,8 +45,7 @@
                     <td class="text-center">
                         <!-- <button (click)="editGroup()" class="btn btn-sm btn-danger">Delete</button>&nbsp; -->
                         <button routerLink="/group-view/{{group.id}}" class="btn btn-sm btn-success">View</button>&nbsp;<button
-                            [routerLink]="['/new-group/']" [queryParams]="{group_id: group.id, is_edit: true}"
-                            class="btn btn-sm btn-primary">Edit</button>&nbsp;
+                            [routerLink]="['/new-group/']" [queryParams]="{group_id: group.id, is_edit: true}" class="btn btn-sm btn-primary">Edit</button>&nbsp;
                         <button (click)="deleteGroup(group.id)" class="btn btn-sm btn-danger">Delete</button>
 
                     </td>
@@ -41,7 +54,17 @@
             <span *ngIf='groups?.length == 0'><br/><em>No groups found.</em></span>
         </table>
     </div>
-    <hr>
+    <!-- <ul *ngIf='pagination.has_other_pages' class="pagination">
+        <li *ngIf='pagination.has_previous'><a href="?page={{ pagination.previous_page_number }}">&laquo;</a></li>
+        <li *ngIf='!pagination.has_previous' class="disabled"><span>&laquo;</span></li>
+        <div *ngFor='let i of pagination.paginator_page_range'>
+            <li *ngIf='pagination.number == i' class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+            <li *ngIf='pagination.number != i'><a href="?page={{ i }}">{{ i }}</a></li>
+        </div>
+        <li *ngIf='pagination.has_next'><a href="?page={{ pagination.next_page_number }}">&raquo;</a></li>
+        <li *ngIf='!pagination.has_next' class="disabled"><span>&raquo;</span></li>
+    </ul> -->
+    <!-- <hr> -->
     <!-- <div class="cmc-ribbon">
         <h3 class="text-primary">My Contacts</h3>
         <button (click)="createContact()" class="btn btn-sm btn-primary">create contact</button>

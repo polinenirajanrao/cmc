@@ -27,6 +27,8 @@ urlpatterns = [
     path(r'group-details/', api.GroupDetails.as_view()),
     path('contact/<int:pk>/', views.ContactDetail.as_view()),
     path('group/<int:pk>/', views.ContactDetail.as_view()),
+    path('groups-by-name/', api.GroupsByName.as_view()),
+    path('search-contacts/', api.SearchContacts.as_view()),
 ]
 
 urlpatterns += router.urls

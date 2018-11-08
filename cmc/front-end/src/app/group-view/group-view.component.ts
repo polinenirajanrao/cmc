@@ -13,6 +13,8 @@ import { Observable } from 'rxjs';
 export class GroupViewComponent implements OnInit {
     contacts: any;
     groupId: string;
+    private searchText: string;
+    private searchBy: string = 'name';
     group: {
         'group_name': undefined,
         'id': undefined,
@@ -69,6 +71,13 @@ export class GroupViewComponent implements OnInit {
         this._UserService.toggleContactStatus(contact_id).subscribe(
             (resp) => { alert("contact status changed"); },
             (err) => { console.log(err), alert("changing contact status failed"); }
+        )
+    }
+
+    searchContacts(searchText, searchBy){
+        this._ApiService.searchContacts(searchText, searchBy).subscribe(
+            (resp) => { this.contacts = resp },
+            (err) => { console.log(err), alert("search failed"); }
         )
     }
 }

@@ -17,6 +17,8 @@ import { ApiService } from "./api.service";
 import { CookieModule } from 'ngx-cookie';
 //Route
 import { routes } from "./routes";
+import { CommonModule } from '@angular/common';  
+
 import { HttpModule, XSRFStrategy, CookieXSRFStrategy } from '@angular/http';
 @NgModule({
   declarations: [
@@ -29,7 +31,7 @@ import { HttpModule, XSRFStrategy, CookieXSRFStrategy } from '@angular/http';
     GroupViewComponent
   ],
   imports: [
-    BrowserModule, FormsModule, HttpClientModule, RouterModule, RouterModule.forRoot(routes), CookieModule.forRoot(),
+    BrowserModule, FormsModule, HttpClientModule, RouterModule, RouterModule.forRoot(routes), CookieModule.forRoot(), CommonModule
   ],
   providers: [UserService, ApiService],
   bootstrap: [AppComponent]

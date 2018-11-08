@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from .models import Employee, Contact, Group
 from rest_framework import views
 from .serializers import ContactSerializer, GroupSerializer, EmployeeSerializer
+from django.db.models import Q
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 class RegisterEmployee(APIView):
@@ -70,10 +72,50 @@ class GetGroupsForEmployee(views.APIView):
     def get(self, request):
         employee = Employee.objects.filter(user=self.request.user).first()
         queryset = Group.objects.filter(employee_id=employee.id)
+        # page = request.GET.get('page', 1)
+        # paginator = Paginator(queryset, 5)
+        # try:
+        #     groups = paginator.page(page)
+        # except PageNotAnInteger:
+        #     groups = paginator.page(1)
+        # except EmptyPage:
+        #     groups = paginator.page(paginator.num_pages)
+
         serializer = GroupSerializer(queryset, many=True)
         permission_classes = (permissions.IsAuthenticated,)
 
-        return Response(serializer.data)
+        # headers for pagination
+        headers = {}
+        # try:
+        #     headers['has_other_pages']=groups.has_other_pages()
+        # except:
+        #     pass
+        # try:
+        #     headers['has_previous']=groups.has_previous()
+        # except:
+        #     pass
+        # try:
+        #     headers['previous_page_number']=groups.previous_page_number()
+        # except:
+        #     pass
+        # try:
+        #     headers['number']=groups.number
+        # except:
+        #     pass
+        # try:
+        #     headers['paginator.page_range']=groups.paginator.page_range
+        # except:
+        #     pass
+        # try:
+        #     headers['has_next']=groups.has_next()
+        # except:
+        #     pass
+        # try:
+        #     headers['next_page_number']=groups.next_page_number()
+        # except:
+        #     pass
+
+        return Response(serializer.data, headers=headers)
 
 
 class GetContactsForGroup(views.APIView):
@@ -309,3 +351,57 @@ class GroupDetails(APIView):
             return Response("failed"+ str(e))
 
 
+class GroupsByName(APIView):
+    """
+    View to get details of logged in employee
+    only authenticated users can access this view.
+    """
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, format=None):
+        """
+        etails of logged in employee
+        """
+        try:
+            # retrieve details from post request
+            employee = Employee.objects.filter(user=self.request.user).first()
+            search_text = request.GET.get('search_text')
+
+            queryset = Group.objects.filter(employee=employee, group_name__icontains=search_text)
+            serializer = GroupSerializer(queryset, many=True)
+
+            return Response(serializer.data)
+        except Exception as e:
+            return Response("failed"+ str(e))
+
+
+class SearchContacts(APIView):
+    """
+    View to get details of logged in employee
+    only authenticated users can access this view.
+    """
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, format=None):
+        """
+        etails of logged in employee
+        """
+        try:
+            # retrieve details from post request
+            employee = Employee.objects.filter(user=self.request.user).first()
+            search_text = request.GET.get('search_text')
+            search_by = request.GET.get('search_by')
+            queryset = Contact.objects.none()
+            if search_by=='name':
+                queryset = Contact.objects.filter((Q(first_name__icontains=search_text) | Q(last_name__icontains=search_text))
+                                                  & Q(employee=employee))
+            elif search_by == 'phone':
+                queryset = Contact.objects.filter(employee=employee, phone__icontains=search_text)
+            elif search_by == 'email':
+                queryset = Contact.objects.filter(employee=employee, email__icontains=search_text)
+
+            serializer = ContactSerializer(queryset, many=True)
+
+            return Response(serializer.data)
+        except Exception as e:
+            return Response("failed"+ str(e))

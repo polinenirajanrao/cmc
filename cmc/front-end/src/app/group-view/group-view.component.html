@@ -4,6 +4,22 @@
         <button [routerLink]="['/new-contact/']" [queryParams]="{group_id: group.id}" class="btn btn-sm btn-primary">New Contact</button>
     </div>
     <hr>
+    <div class="input-group">
+        <form class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+                <select [(ngModel)]="searchBy" name="search-by" class="form-control">
+                    <option value='name'> Filter By Name </option>
+                    <option value='email'> Filter By Email </option>
+                    <option value='phone'> Filter By Phone </option>
+                </select>
+                <input name="search-text" type="text" [(ngModel)]='searchText' class="form-control" placeholder="Search Text">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" (click)=searchContacts(searchText,searchBy) id="search" style="height:34px" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                </span>
+            </div>
+        </form>
+    </div>
+    <hr>
     <div class="table-responsive">
         <table class="table table-hover">
             <thead>
