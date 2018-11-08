@@ -23,7 +23,7 @@ class Group(models.Model):
 
 # Contact model, this has relationship with employee who crated this Contact
 class Contact(models.Model):
-    email = models.EmailField(max_length=70, blank=True, null=True, unique=True)
+    email = models.EmailField(max_length=70, blank=False)
     first_name = models.CharField(max_length=25, blank=False)
     last_name = models.CharField(max_length=25, blank=False)
     phone = models.CharField(max_length=15, blank=False)

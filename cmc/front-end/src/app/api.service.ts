@@ -84,7 +84,13 @@ export class ApiService {
     //   return this.pagination;
     // }
 
+    // return arange array for a python pagination range string
     getRangeArray(range: string){
+      if(range === undefined || range === null || range ===""){
+        return;
+      }
+      // example range will be range(1, 4)
+      // will return [1,2,3]
       var first_index = range.charAt(6);
       var second_index = range.charAt(9);
       var i;
@@ -92,7 +98,6 @@ export class ApiService {
       for(i=first_index; i<second_index; i++){
         rangeArray.push(Number(i));
       }
-
       return rangeArray;
     }
 

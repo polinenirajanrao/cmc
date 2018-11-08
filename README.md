@@ -8,7 +8,7 @@ This app is used by an employee of an organisation to manage contacts and groups
 * angular 6 for front-end
 * django-rest-framework to communicate between angular and django
 * JWT for authentication
-* db.sqlite3 database
+* PostgreSQL database
 
 ## Requirements
 
@@ -40,4 +40,21 @@ Cmc app will be available at http://127.0.0.1:8000.
 
 ## Database
 
-This project uses a SQLite database, which lives in the file `db.sqlite3`. SQLite3 support should be available out of the box on most modern operating systems. 
+This project uses a PostgreSQL database. Use below commands to setup database in an Ubuntu machine
+
+```bash
+sudo apt-get update
+sudo apt-get install python-pip python-dev libpq-dev postgresql postgresql-contrib
+sudo su - postgres
+psql
+CREATE DATABASE cmc;
+CREATE USER cmcuser WITH PASSWORD 'password';
+ALTER ROLE cmcuser SET client_encoding TO 'utf8';
+ALTER ROLE cmcuser SET default_transaction_isolation TO 'read committed';
+ALTER ROLE cmcuser SET timezone TO 'UTC';
+GRANT ALL PRIVILEGES ON DATABASE cmc TO cmcuser;
+\q
+exit
+```
+
+For settings inside django you can see in projects settings.py file

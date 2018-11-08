@@ -1,6 +1,6 @@
 <div class="container cmc-home-container">
     <div class="cmc-ribbon">
-        <h3 class="text-primary cmc-center">{{group.group_name}} </h3> <span style="font-size:20px"> >> Contacts </span>
+        <h3 class="text-primary cmc-center" [routerLink]="['/home']">{{group.group_name}} </h3> <span style="font-size:20px"> >> Contacts </span>
         <button [routerLink]="['/new-contact/']" [queryParams]="{group_id: group.id}" class="btn btn-sm btn-primary">New Contact</button>
     </div>
     <hr>
